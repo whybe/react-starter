@@ -44,7 +44,7 @@ module.exports = (env, argv) => {
               name: '[name].[ext]?[hash]',
               // publicPath: 'images',
               outputPath: 'images',
-              limit: 256
+              limit: 8192
             }
           }
         }
