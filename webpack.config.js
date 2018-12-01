@@ -31,10 +31,22 @@ module.exports = (env, argv) => {
               loader: 'css-loader',
               options: {
                 modules: true,
-                localIdentName: '[path][name]__[local]--[hash:base64:5]',
+                localIdentName: '[path][name]-[local]-[hash:base64:5]',
               }
             }
           ]
+        },
+        {
+          test: /\.(png|jpg|gif|svg)$/,
+          use: {
+            loader: 'url-loader',
+            options: {
+              name: '[name].[ext]?[hash]',
+              // publicPath: 'images',
+              outputPath: 'images',
+              limit: 256
+            }
+          }
         }
       ]
     },
