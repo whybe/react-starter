@@ -15,11 +15,9 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.jsx?$/,
           exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader'
-          }
+          loader: 'babel-loader'
         },
         {
           test: /\.css$/,
@@ -37,12 +35,29 @@ module.exports = (env, argv) => {
           ]
         },
         {
-          test: /\.(png|jpg|gif|svg)$/,
+          test: /\.(png|jpg|gif)$/,
           use: {
             loader: 'url-loader',
             options: {
               name: '[name].[ext]?[hash]',
-              // publicPath: 'images',
+              outputPath: 'images',
+              limit: 8192
+            }
+          }
+        },
+        {
+          test: /\.svg$/,
+          issuer: {
+            test: /\.jsx?$/
+          },
+          use: ['babel-loader', '@svgr/webpack']
+        },
+        {
+          test: /\.svg$/,
+          use: {
+            loader: 'url-loader',
+            options: {
+              name: '[name].[ext]?[hash]',
               outputPath: 'images',
               limit: 8192
             }
