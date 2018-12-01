@@ -17,14 +17,17 @@ module.exports = (env, argv) => {
         {
           test: /\.jsx?$/,
           exclude: /node_modules/,
-          loader: 'babel-loader'
+          use: ['babel-loader']
+        },
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: ['babel-loader', 'eslint-loader']
         },
         {
           test: /\.css$/,
           use: [
-            {
-              loader: 'style-loader',
-            },
+            'style-loader',
             {
               loader: 'css-loader',
               options: {

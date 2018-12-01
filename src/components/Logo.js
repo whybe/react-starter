@@ -1,9 +1,9 @@
 import React from 'react'
 import classes from './Logo.css'
 
-const Logo = () => {
+const Logo = ({title}) => {
   return (
-      <div className={classes.logo}></div>
+      <div className={classes.logo}>{title}</div>
   )
 }
 
