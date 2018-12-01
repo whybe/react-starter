@@ -1,10 +1,10 @@
 import React from 'react'
-import { hot } from 'react-hot-loader'
+import classes from './App.css'
 
 const App = () => {
   return (
-      <div>Hello React!</div>
+      <div className={classes.app}>Hello React!</div>
   )
 }
 
-export default hot(module)(App)
+export default App
