@@ -5,7 +5,7 @@
   ],
   "rules": {
     "no-unused-vars": ["warn"],
-    "max-len": ["warn", {"code": 80, "tabWidth": 2, "ignoreComments": true}],
+    "max-len": ["warn", {"code": 120, "tabWidth": 2, "ignoreComments": true}],
     "react/prop-types": ["warn"]
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"],
