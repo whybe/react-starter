@@ -11,6 +11,7 @@ module.exports = (env, argv) => {
       filename: '[name].js',
       path: path.resolve(__dirname, 'build'),
       chunkFilename: '[name].js',
+      globalObject: `(typeof self !== 'undefined' ? self : this)`
     },
     module: {
       rules: [
@@ -20,9 +21,19 @@ module.exports = (env, argv) => {
           use: ['babel-loader']
         },
         {
-          test: /\.js$/,
+          test: /\.jsx?$/,
           exclude: /node_modules/,
           use: ['babel-loader', 'eslint-loader']
+        },
+        {
+          test: /\.worker\.js$/,
+          use: {
+            loader: 'worker-loader',
+            options: {
+              name: 'workers/[name].[hash].[ext]',
+              publicPath: '/'
+            }
+          }
         },
         {
           test: /\.css$/,

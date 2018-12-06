@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {compose, defaultProps, setPropTypes, withState, withHandlers} from 'recompose'
+import {compose, defaultProps, setPropTypes, withState, withHandlers, lifecycle } from 'recompose'
+import CounterWorker from './counter.worker.js'
 
 const Counter = ({ count, onCountUp, onCountDown, onCountReset }) => (
   <div>
@@ -18,6 +19,8 @@ Counter.propTypes = {
   onCountReset: PropTypes.func.isRequired
 }
 
+var worker;
+
 export default compose(
   setPropTypes({
     initialCount: PropTypes.number
@@ -27,11 +30,23 @@ export default compose(
   }),
   withState('count', 'setCount', ({ initialCount }) => (initialCount)),
   withHandlers({
-    onCountUp: ({ setCount }) => () => setCount(c => c + 1),
-    onCountDown: ({ setCount }) => () => setCount(c => c - 1),
-    onCountReset: ({ setCount, initialCount }) => () => setCount(initialCount),
+    onCountUp: ({ count }) => () => worker.postMessage({ cmd: 'countUp', count }),
+    onCountDown: ({ count }) => () => worker.postMessage({ cmd: 'countDown', count }) ,
+    onCountReset: ({ initialCount }) => () => worker.postMessage({ cmd: 'countReset', initialCount }),
+  }),
+  lifecycle({
+    componentDidMount() {
+      const { setCount } = this.props
+      worker = new CounterWorker()
+      worker.onmessage = e => {
+        console.log(e.data)
+
+        setCount(e.data.count)
+      }
+    },
+    componentWillUnmount() {
+      worker.terminate()
+      worker = null
+    }
   })
 )(Counter)
-
-
-

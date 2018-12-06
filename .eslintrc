@@ -6,11 +6,13 @@
   "rules": {
     "no-unused-vars": ["warn"],
     "max-len": ["warn", {"code": 120, "tabWidth": 2, "ignoreComments": true}],
+    "no-console": ["off"],
     "react/prop-types": ["warn"]
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "env": {
-    "browser": true
+    "browser": true,
+    "node": true
   },
   "settings": {
     "react": {
