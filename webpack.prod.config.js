@@ -1,24 +1,28 @@
 const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   context: path.resolve(__dirname, './src'),
   entry: './index.js',
   output: {
+    filename: 'js/bundle.[hash].js',
+    path: path.resolve(__dirname, 'build'),
+    publicPath: '/',
     globalObject: `(typeof self !== 'undefined' ? self : this)`
   },
-  devServer: {
-    hot: true
-  },
-  devtool: 'inline-source-map',
+  devtool: 'source-map', // 'cheap-module-source-map',
   module: {
     rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        loader: 'babel-loader'
       },
       {
         test: /\.jsx?$/,
@@ -38,7 +42,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
@@ -81,12 +85,23 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+      'process.env.NODE_ENV': JSON.stringify('production')
     }),
+    new CleanWebpackPlugin([ 'build' ]),
     new HtmlWebpackPlugin({
       template: './index.html',
       filename: './index.html'
     }),
-    new webpack.HotModuleReplacementPlugin()
-  ]
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[hash].css',
+      chunkFilename: 'css/[id].[hash].css'
+    })
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({}),
+      new OptimizeCssAssetsPlugin({})
+    ]
+  }
 }
