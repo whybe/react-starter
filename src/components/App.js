@@ -1,9 +1,9 @@
 import React from 'react'
 import classes from './App.css'
-import Logo from './components/Logo'
-import Svgr from './components/Svgr'
-import Counter from './components/Counter'
-import CounterWithWorker from './components/CounterWithWorker'
+import Logo from './Logo'
+import Svgr from './Svgr'
+import Counter from './Counter'
+import CounterWithWorker from './CounterWithWorker'
 
 const test = true;
 
